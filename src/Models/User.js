@@ -376,4 +376,48 @@ export class User {
             }
         });
     }
+    /**
+     * PUT the weighing scale name associated with this scaleID
+     * @param {*} dbConnection
+     * @param {*} credentials as JSON
+     */
+    static async validateUserLogIn(dbConnection, credentials) {
+         //First section
+        console.log(credentials);
+        let dbCol;
+        let dbUsersCollections = 'usersLogInCollection'; //Possible Environment variable
+        try{
+            dbCol = await openDbCollection(dbConnection, dbUsersCollections);
+        } catch(err){
+            console.log(err);
+        }
+        
+        
+        return new Promise(async function (resolve, reject) {
+            try {
+                let obj;
+                //
+                obj = await dbCol.findOne({email:credentials.emailIn});
+                if(obj == null){
+                    reject({status:0, message:"Incorrect email"});
+                }
+                else{
+                    
+                    if(credentials.passIn === obj.password){
+                        resolve({ status:1, message:"Welcome"});
+                    }
+                    else{
+                        reject({status:0, message:"Incorrect passoword"});
+                    }
+
+            }
+            }
+            catch (err) {
+                console.log(
+                    'An error happened while retrieving the trackedIDs array',
+                );
+                reject(err); //error handled by catch() at controller
+            }
+        })
+     }
 }

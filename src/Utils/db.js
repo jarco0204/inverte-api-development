@@ -19,6 +19,7 @@ export const connectToDB = async () => {
 //Function to get access to the db from the controller
 export const openDbCollection = async (db, collectionName) => {
     try {
+        // console.log(db.collection(collectionName))
         return await db.collection(collectionName);
     } catch (err) {
         console.log('Error occurred when opening the db collection');

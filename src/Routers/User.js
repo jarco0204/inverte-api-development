@@ -8,17 +8,18 @@ import {
     getWeighingScaleData,
     updateNameWeighingScaleData,
     updatePortionWeighingScaleData,
+    validateUserLogIn
 } from '../Controllers/User.js';
 
 const userRouter = express.Router(); // Handles all routes starting with /api/user
 
 /**
+ * Request to /api/user/validate
  * Function to validate user sign in
+ * Right now it only works for one user, or unless it is added.
  */
-userRouter.route('/validate').post((req, res) => {
-    console.log(req.body);
-    res.status(202).send({ message: 'Success' });
-});
+userRouter.route('/validate').post(validateUserLogIn);
+
 /**
  * Request to /api/user/create
  * Creates the doc with _id=0 for a user's collection

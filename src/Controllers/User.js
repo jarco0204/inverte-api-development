@@ -209,3 +209,31 @@ export const updatePortionWeighingScaleData = (req, res) => {
             });
         });
 };
+/**
+ * Function
+ */
+export const validateUserLogIn = (req, res) => {
+    //Req.body contains username passIn
+    let credentials = req.body // JSON object
+    // console.log(credentials);
+    //TO-ADD: validation to credentials
+
+    // Giving req.db to this request gives access to db connection to any stranger
+    User.validateUserLogIn(req.db, credentials)
+    .then((response)=>{
+        // 200 vs 202
+        res.status(200).send({
+            obj: response,
+            message: 'Invalid username or password',
+            status: 1 //grant-access
+        });
+    }).catch((err)=>{
+        res.status(403).send({
+            obj: err,
+            message: 'Invalid username or password',
+            status: 0 //No access
+        });
+    })
+
+
+};
