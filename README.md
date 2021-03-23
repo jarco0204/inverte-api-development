@@ -1,4 +1,4 @@
-### This is the server API package that runs express using MVC paradigm.
+### This is the server API that runs express using MVC paradigm.
 
 • index.js: main entry file for the package.
 • \_\_ test \_\_ : contains the Mocha tests.
@@ -19,7 +19,8 @@
 
 ## Design Decisions and Assumptions
 
-# For iteration 2, only one user is assumed to exists. Consequently, only one collection.
+# For iteration 3, only one user is assumed to exists
+However, we are adding more collections to handle our business logic about users.
 
 # ES modules are used instead of require.
 

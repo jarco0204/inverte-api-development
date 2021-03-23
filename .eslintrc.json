@@ -1,0 +1,32 @@
+{
+    // Prettier and prettier/react turn stuff off; thus, must be at the end.
+    "extends": [
+        "eslint:recommended", //Gospel truth
+        "plugin:import/errors",
+        "plugin:react/recommended",
+        "plugin:jsx-a11y/recommended",
+        "prettier", 
+        "prettier/react"],
+    "rules":{
+        "react/prop-types":0, //Prop-types are not useful when using Typescript
+        "no-console": 0
+    },
+    "plugins": ["react", "import","jsx-a11y"], 
+    "parserOptions":{
+        "ecmaVersion": 2020,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env":{
+        "es6": true,
+        "browser": true,
+        "node": true
+    },
+    "settings":{
+        "react":{
+            "version": "detect" //Figure out from package-json
+        }
+    }
+}
