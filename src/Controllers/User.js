@@ -1,4 +1,4 @@
-import { User } from '../Models/User.js';
+import { User } from "../Models/User.js";
 /**
  * Handle operations to /api/user/create
  * Creates the doc with _id=0
@@ -13,13 +13,13 @@ export const createImportantInfoDoc = (req, res) => {
         .then((result) => {
             res.status(202).send({
                 arrayOfScales: result,
-                message: 'Successfully created the info doc',
+                message: "Successfully created the info doc",
             });
         })
         .catch((err) => {
             res.status(404).send({
                 obj: err,
-                message: 'Failed to create _id=0!',
+                message: "Failed to create _id=0!",
             });
         });
 };
@@ -37,13 +37,13 @@ export const addWeighingScale = (req, res) => {
         .then((result) => {
             res.status(202).send({
                 arrayOfScales: result,
-                message: 'Successfully linked the weighing scale to the user',
+                message: "Successfully linked the weighing scale to the user",
             });
         })
         .catch((err) => {
             res.status(404).send({
                 obj: err,
-                message: 'Failed to add weighing scale!',
+                message: "Failed to add weighing scale!",
             });
         });
 };
@@ -63,13 +63,13 @@ export const deleteWeighingScale = (req, res) => {
         .then((result) => {
             res.status(202).send({
                 arrayOfScales: result,
-                message: 'Successfully deleted the weighing scale',
+                message: "Successfully deleted the weighing scale",
             });
         })
         .catch((err) => {
             res.status(404).send({
                 obj: err,
-                message: 'Failed to delete weighing scale!',
+                message: "Failed to delete weighing scale!",
             });
         });
 };
@@ -87,13 +87,13 @@ export const getAllWeighingScales = (req, res) => {
         .then((result) => {
             res.status(202).send({
                 arrayOfScales: result,
-                message: 'Successfully retrieved all weighing scales',
+                message: "Successfully retrieved all weighing scales",
             });
         })
         .catch((err) => {
             res.status(404).send({
                 obj: err,
-                message: 'Failed to get the weighing scales!',
+                message: "Failed to get the weighing scales!",
             });
         });
 };
@@ -114,19 +114,19 @@ export const addWeighingScaleData = (req, res) => {
         req.db,
         collectionName,
         req.body.scaleID,
-        scaleData,
+        scaleData
     )
         .then((result) => {
             res.status(202).send({
                 arrayOfScales: result,
                 message:
-                    'Successfully added the weighing scale data for the first time',
+                    "Successfully added the weighing scale data for the first time",
             });
         })
         .catch((err) => {
             res.status(404).send({
                 obj: err,
-                message: 'Failed to add weighing scale data!',
+                message: "Failed to add weighing scale data!",
             });
         });
 };
@@ -145,13 +145,13 @@ export const getWeighingScaleData = (req, res) => {
         .then((result) => {
             res.status(202).send({
                 arrayOfScales: result,
-                message: 'Successfully retrieved the weighing scale data',
+                message: "Successfully retrieved the weighing scale data",
             });
         })
         .catch((err) => {
             res.status(404).send({
                 obj: err,
-                message: 'Failed to get weighing scale data!',
+                message: "Failed to get weighing scale data!",
             });
         });
 };
@@ -172,13 +172,13 @@ export const updateNameWeighingScaleData = (req, res) => {
             res.status(202).send({
                 arrayOfScales: result,
                 message:
-                    'Successfully updated the weighing scale ingredient name',
+                    "Successfully updated the weighing scale ingredient name",
             });
         })
         .catch((err) => {
             res.status(404).send({
                 obj: err,
-                message: 'Failed to update the weighing scale name data!',
+                message: "Failed to update the weighing scale name data!",
             });
         });
 };
@@ -199,13 +199,13 @@ export const updatePortionWeighingScaleData = (req, res) => {
             res.status(202).send({
                 arrayOfScales: result,
                 message:
-                    'Successfully updated the weighing scale ingredient portion',
+                    "Successfully updated the weighing scale ingredient portion",
             });
         })
         .catch((err) => {
             res.status(404).send({
                 obj: err,
-                message: 'Failed to update the weighing scale portion data!',
+                message: "Failed to update the weighing scale portion data!",
             });
         });
 };
@@ -214,26 +214,57 @@ export const updatePortionWeighingScaleData = (req, res) => {
  */
 export const validateUserLogIn = (req, res) => {
     //Req.body contains username passIn
-    let credentials = req.body // JSON object
+    let credentials = req.body; // JSON object
     // console.log(credentials);
     //TO-ADD: validation to credentials
 
     // Giving req.db to this request gives access to db connection to any stranger
     User.validateUserLogIn(req.db, credentials)
-    .then((response)=>{
-        // 200 vs 202
-        res.status(200).send({
-            obj: response,
-            message: 'Invalid username or password',
-            status: 1 //grant-access
+        .then((response) => {
+            // 200 vs 202
+            res.status(200).send({
+                obj: response,
+                message: "Invalid username or password",
+                status: 1, //grant-access
+            });
+        })
+        .catch((err) => {
+            res.status(403).send({
+                obj: err,
+                message: "Invalid username or password",
+                status: 0, //No access
+            });
         });
-    }).catch((err)=>{
-        res.status(403).send({
-            obj: err,
-            message: 'Invalid username or password',
-            status: 0 //No access
+};
+
+/**
+ * Function to retrieve the an array of orders
+ * @param {*} req
+ * @param {*} res
+ */
+export const getArrayOfPlateOrders = (req, res) => {
+    //Req.body contains username passIn
+    // console.log(req);
+    let credentials = req.query; // JSON object
+    // console.log(credentials);
+    //TO-ADD: validation to credentials
+
+    // Giving req.db to this request gives access to db connection to any stranger
+    User.getArrayOfPlateOrders(req.db, credentials)
+        .then((response) => {
+            // console.log(response);
+            // 200 vs 202
+            res.status(200).send({
+                obj: response,
+                message: "Correctly retrieved the orders",
+                status: 1, //grant-access
+            });
+        })
+        .catch((err) => {
+            res.status(403).send({
+                obj: err,
+                message: "Invalid username",
+                status: 0, //No access
+            });
         });
-    })
-
-
 };

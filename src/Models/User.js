@@ -1,5 +1,5 @@
-import { openDbCollection } from '../Utils/db.js';
-import { lookForImportantInfoDoc } from '../Utils/User.js';
+import { openDbCollection } from "../Utils/db.js";
+import { lookForImportantInfoDoc } from "../Utils/User.js";
 
 /**
  * User class handles the operations to the _id=0, which contains the most important information about a user's collection
@@ -25,7 +25,7 @@ export class User {
                 });
                 resolve(obj);
             } catch (err) {
-                console.log('Error happened while creating _id=0 document');
+                console.log("Error happened while creating _id=0 document");
                 reject(err);
             }
         });
@@ -49,7 +49,7 @@ export class User {
                 infoDoc = obj;
             })
             .catch((err) => {
-                console.log('Unable to retrieve _id=0');
+                console.log("Unable to retrieve _id=0");
                 throw err; // handled by catch in controller
             });
 
@@ -60,7 +60,7 @@ export class User {
                     //Loop to prevent repeated items to be inserted
                     for (let i = 0; i < infoDoc.trackedScalesIDs.length; i++) {
                         if (infoDoc.trackedScalesIDs[i] == scaleID) {
-                            reject({ err: 'ScaleID already inserted!' });
+                            reject({ err: "ScaleID already inserted!" });
                         }
                     }
                     infoDoc.trackedScalesIDs.push(scaleID);
@@ -72,12 +72,12 @@ export class User {
                     { $set: { trackedScalesIDs: infoDoc.trackedScalesIDs } },
                     (err, obj) => {
                         if (err) reject(err);
-                        console.log('Successfully added an scaleID');
+                        console.log("Successfully added an scaleID");
                         resolve(obj);
-                    },
+                    }
                 );
             } catch (err) {
-                console.log('Unable to add the trackedScalesIDs array');
+                console.log("Unable to add the trackedScalesIDs array");
                 reject(err);
             }
         });
@@ -101,7 +101,7 @@ export class User {
                 infoDoc = obj;
             })
             .catch((err) => {
-                console.log('Unable to retrieve _id=0');
+                console.log("Unable to retrieve _id=0");
                 throw err; // handled by catch in controller
             });
 
@@ -124,12 +124,12 @@ export class User {
                     { $set: { trackedScalesIDs: infoDoc.trackedScalesIDs } },
                     (err, obj) => {
                         if (err) reject(err);
-                        console.log('Successfully deleted an scaleID');
+                        console.log("Successfully deleted an scaleID");
                         resolve(obj);
-                    },
+                    }
                 );
             } catch (err) {
-                console.log('Unable to add the trackedScalesIDs array');
+                console.log("Unable to add the trackedScalesIDs array");
                 reject(err);
             }
         });
@@ -153,7 +153,7 @@ export class User {
                 infoDoc = obj;
             })
             .catch((err) => {
-                console.log('Unable to retrieve _id=0');
+                console.log("Unable to retrieve _id=0");
                 throw err; // handled by catch in controller
             });
 
@@ -163,7 +163,7 @@ export class User {
             if (scalesAr.length >= 1) {
                 resolve(scalesAr);
             } else {
-                reject({ err: 'No ids inside the array' });
+                reject({ err: "No ids inside the array" });
             }
         });
     }
@@ -180,7 +180,7 @@ export class User {
         dbConnection,
         colName,
         scaleID,
-        scaleData,
+        scaleData
     ) {
         //First section
         let dbCol;
@@ -195,7 +195,7 @@ export class User {
                 infoDoc = obj;
             })
             .catch((err) => {
-                console.log('Unable to retrieve _id=0');
+                console.log("Unable to retrieve _id=0");
                 throw err; // handled by catch in controller
             });
 
@@ -210,18 +210,18 @@ export class User {
         }
         return new Promise(function (resolve, reject) {
             if (found) {
-                let addKey = scaleID + '_data'; // Dynamically creating key; NOTE it cannot contain .
+                let addKey = scaleID + "_data"; // Dynamically creating key; NOTE it cannot contain .
                 dbCol.updateOne(
                     { _id: 0 },
                     { $set: { [addKey]: scaleData } },
                     (err, obj) => {
                         if (err) reject(err);
-                        console.log('Scale data successfully added');
+                        console.log("Scale data successfully added");
                         resolve(obj);
-                    },
+                    }
                 );
             } else {
-                console.log('The ID has not been created yet');
+                console.log("The ID has not been created yet");
                 reject();
             }
         });
@@ -246,7 +246,7 @@ export class User {
                 infoDoc = obj;
             })
             .catch((err) => {
-                console.log('Unable to retrieve _id=0');
+                console.log("Unable to retrieve _id=0");
                 throw err; // handled by catch in controller
             });
 
@@ -261,10 +261,10 @@ export class User {
         }
         return new Promise(function (resolve, reject) {
             if (found) {
-                let keyData = scaleID + '_data';
+                let keyData = scaleID + "_data";
                 resolve(infoDoc[keyData]);
             } else {
-                reject({ err: 'ScaleID not present in the array' });
+                reject({ err: "ScaleID not present in the array" });
             }
         });
     }
@@ -290,7 +290,7 @@ export class User {
                 infoDoc = obj;
             })
             .catch((err) => {
-                console.log('Unable to retrieve _id=0');
+                console.log("Unable to retrieve _id=0");
                 throw err; // handled by catch in controller
             });
 
@@ -305,7 +305,7 @@ export class User {
         }
         return new Promise(function (resolve, reject) {
             if (found) {
-                let updateKey = scaleID + '_data'; // Dynamically creating key; NOTE it cannot contain .
+                let updateKey = scaleID + "_data"; // Dynamically creating key; NOTE it cannot contain .
                 let dataAr = infoDoc[updateKey]; // FORMAT [name,correctPortion]
                 dataAr[0] = newName;
                 dbCol.updateOne(
@@ -313,12 +313,12 @@ export class User {
                     { $set: { [updateKey]: dataAr } },
                     (err, obj) => {
                         if (err) reject(err);
-                        console.log('Scale data name successfully updated');
+                        console.log("Scale data name successfully updated");
                         resolve(obj);
-                    },
+                    }
                 );
             } else {
-                reject({ err: 'ScaleID not present in the array' });
+                reject({ err: "ScaleID not present in the array" });
             }
         });
     }
@@ -344,7 +344,7 @@ export class User {
                 infoDoc = obj;
             })
             .catch((err) => {
-                console.log('Unable to retrieve _id=0');
+                console.log("Unable to retrieve _id=0");
                 throw err; // handled by catch in controller
             });
 
@@ -359,7 +359,7 @@ export class User {
         }
         return new Promise(function (resolve, reject) {
             if (found) {
-                let updateKey = scaleID + '_data'; // Dynamically creating key; NOTE it cannot contain .
+                let updateKey = scaleID + "_data"; // Dynamically creating key; NOTE it cannot contain .
                 let dataAr = infoDoc[updateKey]; // FORMAT [name,correctPortion]
                 dataAr[1] = newPortion;
                 dbCol.updateOne(
@@ -367,12 +367,12 @@ export class User {
                     { $set: { [updateKey]: dataAr } },
                     (err, obj) => {
                         if (err) reject(err);
-                        console.log('Scale data portion successfully updated');
+                        console.log("Scale data portion successfully updated");
                         resolve(obj);
-                    },
+                    }
                 );
             } else {
-                reject({ err: 'ScaleID not present in the array' });
+                reject({ err: "ScaleID not present in the array" });
             }
         });
     }
@@ -382,42 +382,71 @@ export class User {
      * @param {*} credentials as JSON
      */
     static async validateUserLogIn(dbConnection, credentials) {
-         //First section
+        //First section
         console.log(credentials);
         let dbCol;
-        let dbUsersCollections = 'usersLogInCollection'; //Possible Environment variable
-        try{
+        let dbUsersCollections = "usersLogInCollection"; //Possible Environment variable
+        try {
             dbCol = await openDbCollection(dbConnection, dbUsersCollections);
-        } catch(err){
+        } catch (err) {
             console.log(err);
         }
-        
-        
+
         return new Promise(async function (resolve, reject) {
             try {
                 let obj;
                 //
-                obj = await dbCol.findOne({email:credentials.emailIn});
-                if(obj == null){
-                    reject({status:0, message:"Incorrect email"});
+                obj = await dbCol.findOne({ email: credentials.emailIn });
+                if (obj == null) {
+                    reject({ status: 0, message: "Incorrect email" });
+                } else {
+                    if (credentials.passIn === obj.password) {
+                        resolve({ status: 1, message: "Welcome" });
+                    } else {
+                        reject({ status: 0, message: "Incorrect passoword" });
+                    }
                 }
-                else{
-                    
-                    if(credentials.passIn === obj.password){
-                        resolve({ status:1, message:"Welcome"});
-                    }
-                    else{
-                        reject({status:0, message:"Incorrect passoword"});
-                    }
-
-            }
-            }
-            catch (err) {
+            } catch (err) {
                 console.log(
-                    'An error happened while retrieving the trackedIDs array',
+                    "An error happened while retrieving the trackedIDs array"
                 );
                 reject(err); //error handled by catch() at controller
             }
-        })
-     }
+        });
+    }
+
+    /**
+     *
+     * @param {*} dbConnection
+     * @param {*} credentials
+     */
+    static async getArrayOfPlateOrders(dbConnection, credentials) {
+        // Open db
+        let dbCol;
+        dbCol = await openDbCollection(dbConnection, credentials.userID);
+        // let dbUsersCollections = ""; //Possible Environment variable
+        // try {
+        //     dbCol = await openDbCollection(dbConnection, dbUsersCollections);
+        // } catch (err) {
+        //     console.log(err);
+        // }
+        return new Promise(async function (resolve, reject) {
+            try {
+                let obj;
+                //
+                obj = await dbCol.findOne({ _id: 1 });
+                console.log(obj);
+                if (obj == null) {
+                    reject({ status: 0, message: "No plates added" });
+                } else {
+                    resolve(obj.orders);
+                }
+            } catch (err) {
+                console.log(
+                    "An error happened while retrieving the trackedIDs array"
+                );
+                reject(err); //error handled by catch() at controller
+            }
+        });
+    }
 }
