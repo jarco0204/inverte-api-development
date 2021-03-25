@@ -439,7 +439,7 @@ export class User {
                 if (obj == null) {
                     reject({ status: 0, message: "No plates added" });
                 } else {
-                    resolve(obj.orders);
+                    resolve(obj);
                 }
             } catch (err) {
                 console.log(
