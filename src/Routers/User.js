@@ -10,9 +10,17 @@ import {
     updatePortionWeighingScaleData,
     validateUserLogIn,
     getArrayOfPlateOrders,
+    initiateUserDataInDB,
 } from "../Controllers/User.js";
 
 const userRouter = express.Router(); // Handles all routes starting with /api/user
+
+/**
+ * A-priori function that executes whenever a user sign-ins in for the first time
+ * In a near future, it would be modified so that it only executes when a user signs up
+ * It creates the basic documents in the database so that web-client works as expected.
+ */
+userRouter.route("/initiate").post(initiateUserDataInDB);
 
 /**
  * Request to /api/user/validate

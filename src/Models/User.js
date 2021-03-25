@@ -449,4 +449,54 @@ export class User {
             }
         });
     }
+    /**
+     * Function to create  document with  _id=1, which contain the plateorders info
+     * Executed everytime user goes into sign-in page
+     * @param {*} dbConnection
+     */
+    static async initiateUserDataInDB(dbConnection) {
+        // Open db
+        let dbCol;
+        let NAMEOFDBCOLLECTION = "johanArcos_5680";
+        dbCol = await openDbCollection(dbConnection, NAMEOFDBCOLLECTION);
+        return new Promise(async function (resolve, reject) {
+            try {
+                let obj = await dbCol.findOne({ _id: 1 });
+                if (obj == null) {
+                    console.log("create the document");
+                    let data = dbCol.insertOne({
+                        _id: 1,
+                        orders: [
+                            "Chicken Teriyaky",
+                            "Steak & Cheese",
+                            "Meatballs",
+                            "Tuna",
+                        ],
+                        ingredients: [
+                            ["Chicken", "Italian Bread"],
+                            ["Steak", "Cheese", "White Bread"],
+                            ["Meat", "Tomato Sauce", "Whole Wheat Bread"],
+                            ["Tuna", "White Bread"],
+                        ],
+                        correctPortions: [
+                            [120, 300],
+                            [120, 150, 300],
+                            [140, 320],
+                            [150, 300],
+                        ],
+                    });
+                    resolve(obj);
+                } else {
+                    console.log("Document already created");
+                    resolve({ msg: "Document already created" });
+                }
+            } catch (err) {
+                console.log(err);
+                console.log(
+                    "An error happened while inserting or looking for _id=1 document"
+                );
+                reject(err); //error handled by catch() at controller
+            }
+        });
+    }
 }

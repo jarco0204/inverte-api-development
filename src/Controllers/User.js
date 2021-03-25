@@ -268,3 +268,29 @@ export const getArrayOfPlateOrders = (req, res) => {
             });
         });
 };
+
+/**
+ * Function executes after user signs in (V0.0.1)
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+export const initiateUserDataInDB = (req, res) => {
+    User.initiateUserDataInDB(req.db)
+        .then((response) => {
+            // console.log(response);
+            // 200 vs 202
+            res.status(200).send({
+                obj: response,
+                message: "Correctly retrieved the orders",
+                status: 1, //grant-access
+            });
+        })
+        .catch((err) => {
+            res.status(403).send({
+                obj: err,
+                message: "Error while creating the basic dara array",
+                status: 0, //No access
+            });
+        });
+};
