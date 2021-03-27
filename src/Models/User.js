@@ -435,7 +435,7 @@ export class User {
                 let obj;
                 //
                 obj = await dbCol.findOne({ _id: 1 });
-                console.log(obj);
+                // console.log(obj);
                 if (obj == null) {
                     reject({ status: 0, message: "No plates added" });
                 } else {
@@ -481,7 +481,7 @@ export class User {
                         correctPortions: [
                             [120, 300],
                             [120, 150, 300],
-                            [140, 320],
+                            [140, 320, 260],
                             [150, 300],
                         ],
                     });
