@@ -55,13 +55,15 @@ export const start = async () => {
                 origin: "*",
             },
         }); // Expose the server
+
         //Connection event
         io1.on("connection", (socket) => {
             //Events received from client-side
             console.log("User connected to web-socket");
             //send mesg to all clients
-            socket.on("chat", (data) => {
-                socket.broadcast.emit("chat", data);
+            socket.on("updateWeightReading", (data) => {
+                console.log("I got the data from bot");
+                socket.broadcast.emit("updateWR", data);
             });
             // broadcast only notifies the others
         });
