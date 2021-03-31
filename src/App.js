@@ -2,7 +2,7 @@ import express from "express";
 import ingredientRouter from "./Routers/Ingredient.js";
 import userRouter from "./Routers/User.js";
 import cors from "cors";
-import * as io from "socket.io";
+import { Server } from "socket.io";
 import { connectToDB, closeDBConnection } from "./Utils/db.js";
 
 //Instantiation of main app
@@ -49,23 +49,49 @@ export const start = async () => {
     const port = 8000;
     server = app.listen(port, () => {
         console.log("Express API server is listening on port 8000");
+
         // Web-Socket
-        let io1 = new io.Server(server, {
+        console.log(")Start Web-Socket");
+        const webSocket = new Server(server, {
             cors: {
                 origin: "*",
             },
-        }); // Expose the server
+        });
+        console.log(")Successful Start ");
 
         //Connection event
-        io1.on("connection", (socket) => {
+        console.log("Listening to connections");
+        webSocket.on("connection", (socket) => {
             //Events received from client-side
+            console.log(socket.id); // Is there a way to verify this?
+
             console.log("User connected to web-socket");
-            //send mesg to all clients
             socket.on("updateWeightReading", (data) => {
-                console.log("I got the data from bot");
-                socket.broadcast.emit("updateWR", data);
+                /*
+                    Input:
+                        data {weightScaleID, prevWeight, curWeight}
+                    Tasks:
+                    1) Retrieve the data specific of a portion
+                    1) Determine accuracy of portion (compare)
+                    2)
+                */
+
+                // let portionAcurracy;
+                // if (data.prevWeight - data.curWeight == 51) {
+                //     portionAcurracy = "=";
+                // }
+
+                //Data to send
+                // data.scaleID
+
+                let objectSend = {
+                    scaleID: data.scaleID,
+                    weight: data.curWeight,
+                    accuracy: "=",
+                };
+                console.log(objectSend);
+                socket.broadcast.emit("updateWR", objectSend); // notify others
             });
-            // broadcast only notifies the others
         });
     });
 };
