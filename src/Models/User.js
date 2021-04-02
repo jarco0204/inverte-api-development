@@ -474,14 +474,14 @@ export class User {
                         ],
                         ingredients: [
                             ["Chicken", "Italian Bread"],
-                            ["Steak", "Cheese", "White Bread"],
-                            ["Meat", "Tomato Sauce", "Whole Wheat Bread"],
+                            ["Steak", "Cheese"],
+                            ["Meat", "Whole Wheat"],
                             ["Tuna", "White Bread"],
                         ],
                         correctPortions: [
                             [120, 300],
-                            [120, 150, 300],
-                            [140, 320, 260],
+                            [120, 150],
+                            [140, 320],
                             [150, 300],
                         ],
                     });

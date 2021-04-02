@@ -49,49 +49,38 @@ export const start = async () => {
     const port = 8000;
     server = app.listen(port, () => {
         console.log("Express API server is listening on port 8000");
+    });
+    // Web-Socket
+    console.log("Start Web-Socket");
+    const webSocket = new Server(server, {
+        cors: {
+            origin: "*",
+        },
+    });
 
-        // Web-Socket
-        console.log(")Start Web-Socket");
-        const webSocket = new Server(server, {
-            cors: {
-                origin: "*",
-            },
+    //Connection event
+    console.log("Listening to connections");
+    webSocket.on("connection", (socket) => {
+        //Events received from client-side
+        console.log("User connected to web-socket");
+        console.log(socket.id); // Use middleware to verify connection
+
+        /*
+            Method to update the weight reading of a scaleComponent on React.
+            Receives data from a weighing scale
+        */
+        socket.on("updateWeightReading", (data) => {
+            let accuracy = ["-", "=", "+"];
+            let accurateAnswer = Math.floor(Math.random() * 3); //0-2
+            let objectSend = {
+                scaleID: data.scaleID,
+                weight: data.curWeight,
+                accuracy: accuracy[accurateAnswer],
+            };
+            socket.broadcast.emit("updateWR", objectSend); // notify others
         });
-        console.log(")Successful Start ");
-
-        //Connection event
-        console.log("Listening to connections");
-        webSocket.on("connection", (socket) => {
-            //Events received from client-side
-            console.log(socket.id); // Is there a way to verify this?
-
-            console.log("User connected to web-socket");
-            socket.on("updateWeightReading", (data) => {
-                /*
-                    Input:
-                        data {weightScaleID, prevWeight, curWeight}
-                    Tasks:
-                    1) Retrieve the data specific of a portion
-                    1) Determine accuracy of portion (compare)
-                    2)
-                */
-
-                // let portionAcurracy;
-                // if (data.prevWeight - data.curWeight == 51) {
-                //     portionAcurracy = "=";
-                // }
-
-                //Data to send
-                // data.scaleID
-
-                let objectSend = {
-                    scaleID: data.scaleID,
-                    weight: data.curWeight,
-                    accuracy: "=",
-                };
-                console.log(objectSend);
-                socket.broadcast.emit("updateWR", objectSend); // notify others
-            });
+        socket.on("disconnect", (reason) => {
+            console.log("Client Disconnected");
         });
     });
 };
